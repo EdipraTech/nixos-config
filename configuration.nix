@@ -125,6 +125,7 @@ i18n.extraLocaleSettings = {
             go
             gnome.gnome-font-viewer
             gparted
+            grim
             gtk3
             hyprland
             libreoffice
@@ -144,10 +145,12 @@ i18n.extraLocaleSettings = {
 	    rofi
             rustup
             sddm
+            slurp
 	    terminator
             tldr
             unzip
             virt-manager
+            vscode
             waybar
             wget
             wireplumber
