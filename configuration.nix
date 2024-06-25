@@ -13,19 +13,16 @@
 # Use the systemd-boot EFI boot loader.
 #boot.loader.systemd-boot.enable = true;
     boot.loader.grub.enable = true;
-    boot.loader.grub.device = "nodev";
-    boot.loader.grub.efiSupport = true;
-    boot.loader.efi.canTouchEfiVariables = true;
-    boot.loader.efi.efiSysMountPoint = "/boot";
+    boot.loader.grub.device = "/dev/nvme0n1p1"
     boot.loader.grub.useOSProber = true;
 
-    networking.hostName = "Nix"; # Define your hostname.
+    networking.hostName = "Nixos"; # Define your hostname.
 # Pick only one of the below networking options.
 # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
         networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
 # Set your time zone.
-        time.timeZone = "America/Chicago";
+        time.timeZone = "America/NewYork";
 
 # Configure network proxy if necessary
 # networking.proxy.default = "http://user:password@proxy:port/";
@@ -46,26 +43,20 @@
         enable = true;
         displayManager.sddm = {
             enable = true;
-            theme = "maya";
-            autoNumlock = true;
+        };
+    };
+
+# Enable the hyprland Desktop Environment
+    programs.hyprland = {
+        enable = true;
+        xwayland = {
+            enable = true;
         };
     };
 
 # Allow Unfree packages
     nixpkgs.config.allowUnfree = true;
     nixpkgs.config.allowInsecure = true;
-    nixpkgs.config.PermittedInsecurePackages = [
-	  "python-2.7.18.6"
-    ];
-
-    programs.hyprland = {
-        enable = true;
-    };
-
-    programs.hyprland.xwayland = {
-        hidpi = true;
-        enable = true;
-    };
 
 
 # Configure keymap in X11
@@ -80,9 +71,6 @@
         browsing = true;
         defaultShared = true;
     };
-
-    services.blueman.enable = true;
-    services.gnome3.gnome-keyring.enable = true;
 # Enable sound.
     sound.enable = true;
 # hardware.pulseaudio.enable = true;
@@ -107,129 +95,57 @@
     boot.extraModprobeConfig = "options kvm_intel nested=1";
 
 # Define a user account. Don't forget to set a password with ‘passwd’.
-    users.users.jake = {
+    users.users.edipratech = {
         isNormalUser = true;
+        description = "Daniel Arpide";
         extraGroups = [ "networkmanager" "wheel" "video" "kvm" ]; # Enable ‘sudo’ for the user.
             packages = with pkgs; [
-      cinnamon.nemo-with-extensions
-#     firefox-wayland
-#     vim
-#     neofetch
-#     alacritty
-#     kitty
-#     hyprland
-#     tree
             ];
     };
-
-    services.locate = {
-        enable = true;
-        locate = pkgs.mlocate;
-    };
-
-# environment etc
-    environment.etc = {
-	"xdg/gtk-3.0" .source = ./gtk-3.0;
-    };
-
-# Environment variables
-    environment = {
-        variables = {
-        QT_QPA_PLATFORMTHEME = "qt5ct";
-        QT_QPA_PLATFORM = "xcb obs";
-        };
-    };
-
 
 # List packages installed in system profile. To search, run:
 # $ nix search wget
     environment.systemPackages = with pkgs; [
-        vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-#rustup
-            alacritty
-            audacity
             brightnessctl
-            brillo
             cargo
             cmake
-            emacs
-            eww-wayland
             firefox
-            flameshot
-            fontpreview
             fzf
             gcc
-            gcolor2
             gimp
             git
             glibc
-            gnome.gnome-keyring
-            gnumake
             go
+            gnome.gnome-font-viewer
             gparted
             gtk3
-            hplip
-            hugo
             hyprland
-            hyprpaper
-            hyprpicker
-            jp2a
-            kdenlive
             libreoffice
             libsecret
             libvirt
             lsd
             lxappearance
-            mailspring
             meson
-            mpv
             fastfetch 
             ninja
             networkmanagerapplet
 	    neovim
-	    ntfs-3g
-            pavucontrol
             pipewire
-            pkg-config
             polkit_gnome
             qemu_kvm
-            qt5.qtwayland
-            qt6.qmake
-            qt6.qtwayland
-            ranger
-            ripgrep
 	    rofi
-            rofi-wayland
             rustup
-            scrot
             sddm
-            shellcheck
-            silver-searcher
-            simplescreenrecorder
 	    terminator
             tldr
-            trash-cli
             unzip
-            virt-viewer
             virt-manager
             waybar
             wget
             wireplumber
-            wl-color-picker
             wofi
-            wlroots
-            xdg-desktop-portal-hyprland
-            xdg-desktop-portal-gtk
-            xdg-utils
             xwayland
             ];
-
-    fonts.fontDir.enable = true;
-    fonts.fonts = with pkgs; [  
-        nerdfonts
-        font-awesome
-        google-fonts
-    ];
 
 # Some programs need SUID wrappers, can be configured further or are
 # started in user sessions.
@@ -239,19 +155,6 @@
    enableSSHSupport = true;
  };
 
-# List services that you want to enable:
-    services.emacs = {
-        enable = true;
-        package = pkgs.emacs;
-    };
-
-    services.dbus.enable = true;
-    xdg.portal = {
-        enable = true;
-        extraPortals = [ 
-        pkgs.xdg-desktop-portal-gtk
-        ];
-    }; 
 # Enable the OpenSSH daemon.
  services.openssh.enable = true;
 
@@ -272,13 +175,6 @@
 # this value at the release version of the first install of this system.
 # Before changing this value read the documentation for this option
 # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-    system.stateVersion = "23.05"; # Did you read the comment?
-
-        nixpkgs.overlays = [
-        (self: super: {
-         waybar = super.waybar.overrideAttrs (oldAttrs: {
-                 mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-                 });
-         })
-        ];}
+    system.stateVersion = "24.05"; # Did you read the comment?
+}
 
