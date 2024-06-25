@@ -137,6 +137,7 @@ i18n.extraLocaleSettings = {
             ninja
             networkmanagerapplet
 	    neovim
+            parsec-bin
             pipewire
             polkit_gnome
             qemu_kvm
